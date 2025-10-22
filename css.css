@@ -1,0 +1,11 @@
+ h1{
+            text-align: center;
+            color: black;
+            font-size: 80px;
+        }
+        p{
+            text-align: center;
+            color: saddlebrown;
+            font-size: 40px;
+            overflow:inherit
+        } 

@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="tr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta author="EfeTuran">
+  <title>Efe Turan</title>
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --card: #0b0b0b;
+      --muted: #cfcfcf;
+      --accent: #2fe1c9;
+      --accent-glow: rgba(47, 225, 201, 0.3);
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-2: rgba(0, 0, 0, 0.55);
+    }
+
+    * {
+      cursor: none !important;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--bg);
+      color: #e6e6e6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+
+    .custom-cursor {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: all 0.15s ease;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: difference;
+    }
+
+    .custom-cursor::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 4px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    .custom-cursor.hover {
+      width: 50px;
+      height: 50px;
+      background: rgba(47, 225, 201, 0.1);
+      border-color: var(--accent);
+    }
+
+
+    .cursor-trail {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0.6;
+      animation: trail-fade 0.5s ease-out forwards;
+    }
+
+    @keyframes trail-fade {
+      to {
+        opacity: 0;
+        transform: scale(0);
+      }
+    }
+
+
+    .particle {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9997;
+      animation: particle-burst 0.8s ease-out forwards;
+    }
+
+    @keyframes particle-burst {
+      to {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+      }
+    }
+
+
+    #vanta-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+
+    .wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      position: relative;
+      padding: 60px 20px;
+      box-sizing: border-box;
+    }
+
+    .card {
+      width: 920px;
+      max-width: 94vw;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.2));
+      border-radius: 14px;
+      padding: 34px 28px 48px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px) saturate(120%);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      transition: transform 0.3s ease;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+
+
+    .card.tilt {
+      transform: rotateX(var(--rx)) rotateY(var(--ry));
+    }
+
+
+    .logo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: 0 auto 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: conic-gradient(from 200deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+      border: 3px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), inset 0 -8px 14px rgba(0, 0, 0, 0.4);
+      position: relative;
+      animation: logo-pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes logo-pulse {
+
+      0%,
+      100% {
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6),
+          inset 0 -8px 14px rgba(0, 0, 0, 0.4),
+          0 0 0 0 var(--accent-glow);
+      }
+
+      50% {
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6),
+          inset 0 -8px 14px rgba(0, 0, 0, 0.4),
+          0 0 20px 4px var(--accent-glow);
+      }
+    }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover img {
+      transform: scale(1.05) rotate(5deg);
+    }
+
+    h1 {
+      margin: 6px 0 0;
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(47, 225, 201, 0.3);
+    }
+
+    .subtitle {
+      margin-top: 6px;
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 1px;
+      font-size: 18px;
+      min-height: 26px;
+    }
+
+
+    .nav {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin: 18px 0 24px;
+      flex-wrap: wrap;
+    }
+
+    .nav button {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      color: #ddd;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: all .25s ease;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.45);
+      position: relative;
+      overflow: hidden;
+    }
+
+
+    .nav button::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(47, 225, 201, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .nav button:active::after {
+      width: 300px;
+      height: 300px;
+    }
+
+    .nav button.active {
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.65));
+      color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6), 0 0 0 3px rgba(47, 225, 201, 0.04) inset;
+    }
+
+
+    .content-section {
+      display: none;
+      margin-top: 8px;
+      padding: 12px 30px;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .link-btn {
+      width: 80%;
+      max-width: 720px;
+      min-width: 280px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.45));
+      border-radius: 12px;
+      padding: 16px 18px;
+      text-decoration: none;
+      color: #eee;
+      font-weight: 600;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      transition: transform .22s cubic-bezier(.2, .9, .2, 1), box-shadow .22s, background .22s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .link-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(47, 225, 201, 0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .link-btn:hover::before {
+      left: 100%;
+    }
+
+    .link-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.02));
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      transition: transform .6s ease;
+      transform: translateX(-100%);
+    }
+
+    .link-btn:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 20px var(--accent-glow);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.6));
+    }
+
+    .link-btn:hover::after {
+      transform: translateX(0%);
+    }
+
+    .link-btn .label {
+      display: block;
+      font-size: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+
+    .text-content {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.3));
+      border-radius: 12px;
+      padding: 24px;
+      text-align: left;
+      line-height: 1.8;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .text-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--accent), transparent);
+    }
+
+    .text-content h2 {
+      color: var(--accent);
+      margin-top: 0;
+      margin-bottom: 16px;
+      font-size: 22px;
+      text-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .text-content p {
+      margin-bottom: 14px;
+      color: #ddd;
+    }
+
+
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+      justify-content: center;
+    }
+
+    .skill-badge {
+      background: linear-gradient(135deg, rgba(47, 225, 201, 0.1), rgba(0, 0, 0, 0.3));
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid rgba(47, 225, 201, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .skill-badge:hover {
+      background: linear-gradient(135deg, rgba(47, 225, 201, 0.2), rgba(0, 0, 0, 0.4));
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--accent-glow);
+    }
+
+
+    @media (max-width:640px) {
+      .card {
+        padding: 22px 16px 36px;
+      }
+
+      .logo {
+        width: 96px;
+        height: 96px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      .subtitle {
+        font-size: 15px;
+      }
+
+      .link-btn {
+        width: 92%;
+        padding: 14px;
+      }
+
+      .nav {
+        gap: 8px;
+      }
+
+      .text-content {
+        padding: 18px;
+      }
+
+      .custom-cursor,
+      .cursor-trail {
+        display: none;
+      }
+    }
+
+
+    .typed-cursor {
+      font-family: "Share Tech Mono", monospace;
+      color: var(--accent);
+      opacity: 1;
+      animation: blink 1s infinite;
+      margin-left: 3px;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0
+      }
+    }
+
+
+    .language-switcher {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      gap: 10px;
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3));
+      padding: 8px 12px;
+      border-radius: 30px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .lang-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .lang-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .lang-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle, rgba(47, 225, 201, 0.2), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .lang-btn:hover {
+      transform: scale(1.1) rotate(5deg);
+      border-color: var(--accent);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .lang-btn:hover::before {
+      opacity: 1;
+    }
+
+    .lang-btn.active {
+      border-color: var(--accent);
+      background: rgba(47, 225, 201, 0.1);
+      box-shadow: 0 0 15px var(--accent-glow);
+      transform: scale(1.05);
+    }
+
+
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 36px 36px;
+      opacity: 0.25;
+      mix-blend-mode: overlay;
+    }
+
+    @media (max-width:640px) {
+      .language-switcher {
+        top: 15px;
+        right: 15px;
+        padding: 6px 10px;
+      }
+
+      .lang-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+      }
+    }
+
+
+    @keyframes shimmer {
+      0% {
+        background-position: -1000px 0;
+      }
+
+      100% {
+        background-position: 1000px 0;
+      }
+    }
+
+    .nav button:focus,
+    .link-btn:focus {
+      outline: 3px solid rgba(47, 225, 201, 0.08);
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div class="custom-cursor"></div>
+
+
+  <div class="language-switcher">
+    <button class="lang-btn" data-lang="tr" title="Türkçe">
+      <img src="https://flagcdn.com/w80/tr.png" alt="Türkçe">
+    </button>
+    <button class="lang-btn active" data-lang="en" title="English">
+      <img src="https://flagcdn.com/w80/gb.png" alt="English">
+    </button>
+  </div>
+
+
+  <div id="vanta-bg" aria-hidden="true"></div>
+
+  <main class="wrap" role="main">
+    <section class="card" aria-labelledby="profile-name">
+      <div class="logo" aria-hidden="true">
+        <img src="logo4.png" alt="Efe Turan Logo">
+      </div>
+
+      <h1 id="profile-name">Efe Turan</h1>
+      <div class="subtitle">
+        <span class="typing"></span><span class="typed-cursor">|</span>
+      </div>
+
+      <nav class="nav" role="navigation" aria-label="Ana Menü">
+        <button class="nav-btn" data-target="other" data-tr="Diğer" data-en="Other">Other</button>
+        <button class="nav-btn active" data-target="social" data-tr="Sosyal Medya" data-en="Social Media">Social
+          Media</button>
+        <button class="nav-btn" data-target="about" data-tr="Hakkımda" data-en="About">About</button>
+        <button class="nav-btn" data-target="blog" data-tr="Blog" data-en="Blog">Blog</button>
+      </nav>
+
+
+      <div id="other-content" class="content-section">
+        <div class="text-content">
+          <h2 data-tr="Diğer Projeler" data-en="Other Projects">Other Projects</h2>
+          <p data-tr="Burada yan projelerim, deneysel çalışmalarım ve hobilerimi bulabilirsiniz."
+            data-en="Here you can find my side projects, experimental works and hobbies.">
+            Here you can find my side projects, experimental works and hobbies.
+          </p>
+          <div class="skills">
+            <span class="skill-badge">Open Source</span>
+            <span class="skill-badge" data-tr="Yan Projeler" data-en="Side Projects">Side Projects</span>
+            <span class="skill-badge" data-tr="Deneyler" data-en="Experiments">Experiments</span>
+          </div>
+        </div>
+      </div>
+
+
+      <div id="social-content" class="content-section active">
+        <div class="links">
+          <a class="link-btn" href="https://www.linkedin.com/in/efe-turan-73a250387" target="_blank" role="link">
+            <span class="label">🔗 LinkedIn</span>
+          </a>
+          <a class="link-btn" href="https://github.com/senhorsco" target="_blank" role="link">
+            <span class="label">💻 GitHub</span>
+          </a>
+          <a class="link-btn" href="https://www.instagram.com/efetrn96" target="_blank" role="link">
+            <span class="label">📸 Instagram</span>
+          </a>
+          <a class="link-btn" href="https://x.com/scovlr" target="_blank" role="link">
+            <span class="label">🐦 Twitter</span>
+          </a>
+        </div>
+      </div>
+
+
+      <div id="about-content" class="content-section">
+        <div class="text-content">
+          <h2 data-tr="Hakkımda" data-en="About Me">About Me</h2>
+          <p data-tr="Merhaba! Benim adım Efe Turan. C++ Geliştiricisi ve Backend Mühendisiyim."
+            data-en="Hello! My name is Efe Turan. I am a C++ Developer and Backend Engineer.">
+            Hello! My name is Efe Turan. I am a C++ Developer and Backend Engineer.
+          </p>
+          <p data-tr="Özellikle sistem programlama, performans optimizasyonu ve backend mimarisi konularında deneyimliyim. JavaScript ekosistemi ve siber güvenlik alanlarına olan ilgim, projelerime farklı bir bakış açısı kazandırıyor."
+            data-en="I have experience especially in system programming, performance optimization and backend architecture. My interest in JavaScript ecosystem and cybersecurity brings a different perspective to my projects.">
+            I have experience especially in system programming, performance optimization and backend architecture. My
+            interest in JavaScript ecosystem and cybersecurity brings a different perspective to my projects.
+          </p>
+          <p data-tr="Kali Linux ve penetrasyon testleri konusunda kendimi geliştirmeye devam ediyorum. Kod yazmak, sorun çözmek ve yeni teknolojiler öğrenmek benim için bir tutku."
+            data-en="I continue to improve myself in Kali Linux and penetration testing. Writing code, solving problems and learning new technologies are a passion for me.">
+            I continue to improve myself in Kali Linux and penetration testing. Writing code, solving problems and
+            learning new technologies are a passion for me.
+          </p>
+
+          <div class="skills">
+            <span class="skill-badge">C++</span>
+            <span class="skill-badge">Backend</span>
+            <span class="skill-badge">JavaScript</span>
+            <span class="skill-badge">Kali Linux</span>
+            <span class="skill-badge" data-tr="Güvenlik" data-en="Security">Security</span>
+            <span class="skill-badge" data-tr="API Tasarımı" data-en="API Design">API Design</span>
+          </div>
+        </div>
+      </div>
+
+
+      <div id="blog-content" class="content-section">
+        <div class="text-content">
+          <h2 data-tr="Blog & Yazılar" data-en="Blog & Articles">Blog & Articles</h2>
+          <p data-tr="Yakında burada teknik yazılarım, kod örnekleri ve projelerimle ilgili detaylı içerikler paylaşacağım."
+            data-en="Soon I will share my technical articles, code examples and detailed content about my projects here.">
+            Soon I will share my technical articles, code examples and detailed content about my projects here.
+          </p>
+          <p data-tr="Yazılım geliştirme best practices, backend teknolojileri, performans optimizasyonu ve siber güvenlik konularında düşüncelerimi ve deneyimlerimi bulabileceksiniz."
+            data-en="You will find my thoughts and experiences on software development best practices, backend technologies, performance optimization and cybersecurity.">
+            You will find my thoughts and experiences on software development best practices, backend technologies,
+            performance optimization and cybersecurity.
+          </p>
+          <p data-tr="📝 Blog içeriği hazırlanıyor..." data-en="📝 Blog content is being prepared...">📝 Blog content is
+            being prepared...</p>
+          <div class="skills">
+            <span class="skill-badge" data-tr="Eğitimler" data-en="Tutorials">Tutorials</span>
+            <span class="skill-badge" data-tr="Teknik Makaleler" data-en="Tech Articles">Tech Articles</span>
+            <span class="skill-badge" data-tr="Kod Parçacıkları" data-en="Code Snippets">Code Snippets</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-overlay" aria-hidden="true"></div>
+    </section>
+  </main>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"></script>
+
+  <script>
+
+    (function languageSwitcher() {
+      let currentLang = 'en';
+
+      const translations = {
+        typed: {
+          tr: ['C++ Developer', 'Backend Engineer', 'JS / KALI Enthusiast'],
+          en: ['C++ Developer', 'Backend Engineer', 'JS / KALI Enthusiast']
+        }
+      };
+
+      function switchLanguage(lang) {
+        currentLang = lang;
+
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.lang === lang);
+        });
+
+
+        document.querySelectorAll('[data-tr][data-en]').forEach(el => {
+          const text = el.getAttribute('data-' + lang);
+          if (text) {
+            el.textContent = text;
+          }
+        });
+
+
+        const typingEl = document.querySelector('.typing');
+        if (typingEl && window.typedInstance) {
+          window.typedInstance.destroy();
+          window.typedInstance = new Typed(typingEl, {
+            strings: translations.typed[lang],
+            typeSpeed: 70,
+            backSpeed: 40,
+            backDelay: 1400,
+            startDelay: 200,
+            loop: true,
+            showCursor: false
+          });
+        }
+
+
+        localStorage.setItem('preferredLanguage', lang);
+      }
+
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          switchLanguage(btn.dataset.lang);
+        });
+      });
+
+      const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+      if (savedLang !== 'en') {
+        switchLanguage(savedLang);
+      }
+    })();
+
+    (function customCursor() {
+      const cursor = document.querySelector('.custom-cursor');
+      let mouseX = 0, mouseY = 0;
+      let cursorX = 0, cursorY = 0;
+
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        if (Math.random() > 0.8) {
+          const trail = document.createElement('div');
+          trail.className = 'cursor-trail';
+          trail.style.left = e.clientX + 'px';
+          trail.style.top = e.clientY + 'px';
+          document.body.appendChild(trail);
+          setTimeout(() => trail.remove(), 500);
+        }
+      });
+
+      function animate() {
+        cursorX += (mouseX - cursorX) * 0.15;
+        cursorY += (mouseY - cursorY) * 0.15;
+        cursor.style.left = cursorX + 'px';
+        cursor.style.top = cursorY + 'px';
+        requestAnimationFrame(animate);
+      }
+      animate();
+
+      document.querySelectorAll('button, a, .logo').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+      });
+    })();
+
+    (function clickParticles() {
+      document.addEventListener('click', (e) => {
+        for (let i = 0; i < 8; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'particle';
+          particle.style.left = e.clientX + 'px';
+          particle.style.top = e.clientY + 'px';
+
+          const angle = (Math.PI * 2 * i) / 8;
+          const distance = 50 + Math.random() * 50;
+          particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+          particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+
+          document.body.appendChild(particle);
+          setTimeout(() => particle.remove(), 800);
+        }
+      });
+    })();
+
+    (function cardTilt() {
+      const card = document.querySelector('.card');
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = ((y - centerY) / centerY) * -5;
+        const rotateY = ((x - centerX) / centerX) * 5;
+
+        card.style.setProperty('--rx', rotateX + 'deg');
+        card.style.setProperty('--ry', rotateY + 'deg');
+        card.classList.add('tilt');
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.setProperty('--rx', '0deg');
+        card.style.setProperty('--ry', '0deg');
+        setTimeout(() => card.classList.remove('tilt'), 300);
+      });
+    })();
+
+    (function initVanta() {
+      if (typeof VANTA === 'undefined' || !VANTA.NET) return;
+      VANTA.NET({
+        el: "#vanta-bg",
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        scale: 1.00,
+        scaleMobile: 1.00,
+        color: 0x2fe1c9,
+        backgroundColor: 0x0d0d0d,
+        points: 12.00,
+        maxDistance: 22.00,
+        spacing: 20.00,
+      });
+    })();
+
+    (function initTyped() {
+      const el = document.querySelector('.typing');
+      if (!el) return;
+      window.typedInstance = new Typed(el, {
+        strings: ['C++ Developer', 'Backend Engineer', 'JS / KALI Enthusiast', 'Problem Solver'],
+        typeSpeed: 70,
+        backSpeed: 40,
+        backDelay: 1400,
+        startDelay: 400,
+        loop: true,
+        showCursor: false
+      });
+    })();
+
+    (function entrance() {
+      if (typeof gsap === 'undefined') return;
+      gsap.from(".logo", { y: -20, opacity: 0, duration: .9, ease: "power3.out" });
+      gsap.from("h1", { y: -6, opacity: 0, duration: .8, delay: .12 });
+      gsap.from(".subtitle", { y: -4, opacity: 0, duration: .8, delay: .18 });
+      gsap.from(".nav button", { y: 6, opacity: 0, stagger: .06, duration: .6, delay: .28 });
+      gsap.from(".content-section.active .link-btn, .content-section.active .text-content", {
+        y: 18, opacity: 0, stagger: .08, duration: .9, delay: .4, ease: "power3.out"
+      });
+    })();
+
+    (function navActive() {
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+          e.currentTarget.classList.add('active');
+
+          document.querySelectorAll('.content-section').forEach(section => {
+            section.classList.remove('active');
+          });
+
+          const target = e.currentTarget.getAttribute('data-target');
+          const targetContent = document.getElementById(target + '-content');
+          if (targetContent) {
+            targetContent.classList.add('active');
+            gsap.from(targetContent.querySelectorAll('.link-btn, .text-content, .skill-badge'), {
+              y: 18, opacity: 0, stagger: .08, duration: .6, ease: "power3.out"
+            });
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+
+</html>
+
+
+
+<!-- Designed By Efe Turan
